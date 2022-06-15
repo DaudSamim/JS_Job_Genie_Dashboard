@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { Request, Response } from 'express';
 import { CommentDocument, Comment } from '../models/comment.model';
 
@@ -5,17 +6,59 @@ const addComment = async (req: Request, res: Response) => {
   try {
     const commentToAdd: CommentDocument = req.body;
 
-    await Comment.collection.insertOne({ ...commentToAdd, challengeId: 'challenge_1' });
+    const addedComment = await Comment.create({
+      ...commentToAdd,
+      challengeId: 'challenge_1',
+      commentedBy: mongoose.Types.ObjectId(commentToAdd.commentedBy),
+    });
 
-    return res.status(200).json({ message: 'success', data: { commentToAdd } });
+    return res.status(200).json({ message: 'success', data: { addedComment } });
   } catch (error) {
     console.log('Error is -->', error);
     return res.status(404).json({ message: 'fail', error });
   }
 };
+
+type ReplyCommentBody = {
+  comment: CommentDocument;
+  replyToId: string;
+};
+
+const replyToComment = async (req: Request, res: Response) => {
+  try {
+    const { comment, replyToId }: ReplyCommentBody = req.body;
+
+    if (!comment || !replyToId) {
+      throw new Error('Comment and reply id are required fields!');
+    }
+
+    const addedComment = await Comment.create({
+      ...comment,
+      challengeId: 'challenge_1',
+      commentedBy: mongoose.Types.ObjectId(comment.commentedBy),
+      isReply: true,
+    });
+
+    const parentCommnt = await Comment.findById(replyToId).exec();
+
+    parentCommnt?.childId.push(mongoose.Types.ObjectId(addedComment._id));
+
+    await parentCommnt?.save();
+
+    // const updatedComment = await Comment.findByIdAndUpdate(replyToId, parentCommnt, { new: true, runValidators: true });
+
+    // Comment.findByIdAndUpdate(replyToId, { childId: [addedId] });
+
+    return res.status(200).json({ message: 'success', data: { addedComment } });
+  } catch (error) {
+    console.log('Error is --> ', error);
+    return res.status(404).json({ message: 'fail', error });
+  }
+};
+
 const getCommentsForChallenge = async (req: Request, res: Response) => {
   try {
-    const comments = await Comment.find({ challengeId: 'challenge_1' }).exec();
+    const comments = await Comment.find({ challengeId: 'challenge_1' }).populate({ path: 'childId' }).exec();
 
     return res.status(200).json({ message: 'success', data: comments });
   } catch (error) {
@@ -24,4 +67,4 @@ const getCommentsForChallenge = async (req: Request, res: Response) => {
   }
 };
 
-export { addComment, getCommentsForChallenge };
+export { addComment, getCommentsForChallenge, replyToComment };

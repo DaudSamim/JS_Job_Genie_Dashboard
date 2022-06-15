@@ -14,13 +14,17 @@ import Challenges from "./components/pages/Dashboard/Challenges";
 
 import CashChallenges from "./components/pages/Dashboard/Challenges/Cash";
 import SubmitChallenge from "./components/pages/Dashboard/Sub-Disc/SubmitChallenge";
+import PublicRoute from "./components/Routes/PublicRoute/indes";
 
 const App = () => {
   return (
     <Router>
       <Routes>
         {/* Public Router  */}
-        <Route path="/" element={<HomePage />} />
+
+        <Route path="/" element={<PublicRoute />}>
+          <Route path="/" element={<HomePage />} />
+        </Route>
 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
