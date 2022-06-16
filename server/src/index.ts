@@ -9,6 +9,7 @@ import authenticate from './middlewares/auth';
 import { paymentRoute } from './routes/payment.route';
 import { githubRepoRoute } from './routes/githubRepo.route';
 import { commentRoute } from './routes/comment.route';
+import { challengeRoute } from './routes/challenge.route';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use('/api/', authRoute());
 app.use('/api/', paymentRoute());
 app.use('/api/', githubRepoRoute());
 app.use('/api/', commentRoute());
+app.use('/api/', challengeRoute());
 
 app.get('/api', (req, res) => {
   return res.json({ message: 'Hello Arslan !' });

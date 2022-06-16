@@ -6,6 +6,14 @@ type UserDocument = Document & {
   password: string;
   enabled: boolean;
   stripePass: string;
+  avatarImg: string;
+  about: string;
+  profession: string;
+  phone: string;
+  linkedIn: string;
+  portFolio: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 type UserInput = {
@@ -13,6 +21,12 @@ type UserInput = {
   email: UserDocument['email'];
   password?: UserDocument['password'];
   enabled?: UserDocument['enabled'];
+  avatarImg?: UserDocument['avatarImg'];
+  about?: UserDocument['about'];
+  profession?: UserDocument['profession'];
+  phone?: UserDocument['phone'];
+  linkedIn?: UserDocument['linkedIn'];
+  portFolio?: UserDocument['portFolio'];
 };
 
 const usersSchema = new Schema(
@@ -20,6 +34,30 @@ const usersSchema = new Schema(
     fullName: {
       type: Schema.Types.String,
       required: true,
+    },
+    profession: {
+      type: Schema.Types.String,
+      required: false,
+    },
+    linkedIn: {
+      type: Schema.Types.String,
+      required: false,
+    },
+    portFolio: {
+      type: Schema.Types.String,
+      required: false,
+    },
+    avatarImg: {
+      type: Schema.Types.String,
+      required: false,
+    },
+    about: {
+      type: Schema.Types.String,
+      required: false,
+    },
+    phone: {
+      type: Schema.Types.String,
+      required: false,
     },
     email: {
       type: Schema.Types.String,

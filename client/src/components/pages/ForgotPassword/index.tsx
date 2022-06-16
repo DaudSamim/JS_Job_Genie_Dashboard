@@ -1,16 +1,39 @@
 import React from "react";
 import { Avatar, CssBaseline, TextField, Box, Typography, Container, Grid } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HomeLayout from "../../layout/HomeLayout";
+import toast from "react-hot-toast";
 
 const ForgotPassword = () => {
+
+  const navigate = useNavigate();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-    });
-  };
+
+    if (data.get("email") === ' ' || !data.get("email")) {
+      toast.error('Please fill Emty Field')
+      return false;
+    } else {
+      fetch("/api/createAndSendResetPasswordUrl", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: data.get("email"),
+        }),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          navigate("/login");
+          console.log(data);
+          toast.success(data?.message)
+        })
+        .catch((err) => console.log(err))
+    };
+
+  }
 
   return (
     <HomeLayout>

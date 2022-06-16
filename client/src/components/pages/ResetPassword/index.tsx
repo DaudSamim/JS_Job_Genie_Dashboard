@@ -2,7 +2,7 @@ import HomeLayout from "../../layout/HomeLayout";
 import ScreenLoader from "../../shared/ScreenLoader";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import {
     CssBaseline,
     TextField,
@@ -21,9 +21,7 @@ const ResetPassword = () => {
 
 
     const { tokken }: any = useParams();
-    // console.log(tokken)
-    const userTokken = jwt(tokken);
-    console.log(userTokken);
+    console.log(tokken);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         setLoading(true);
@@ -41,22 +39,24 @@ const ResetPassword = () => {
                 let password = data?.get("c_password");
                 let passwordLength: any = password?.toString().length
                 if (passwordLength >= 8) {
-                    // fetch("/api/login", {
-                    //     method: "post",
-                    //     headers: { "Content-Type": "application/json" },
-                    //     body: JSON.stringify({
-                    //         email: data.get("c_password")
-                    //     }),
-                    // })
-                    //     .then((res) => {
-                    //         return res.json();
-                    //     })
-                    //     .then((data) => {
-                    //         navigate("/home");
-                    //         console.log(data);
-                    //     })
-                    //     .catch((err) => console.log(err))
-                    //     .finally(() => setLoading(false));
+                    fetch("/api/resetPassword", {
+                        method: "post",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            resetPasswordTokken: tokken,
+                            newPassword: data.get("c_password")
+                        }),
+                    })
+                        .then((res) => {
+                            return res.json();
+                        })
+                        .then((data) => {
+                            navigate("/login");
+                            console.log(data);
+                            // toast.success(data?.)
+                        })
+                        .catch((err) => console.log(err))
+                        .finally(() => setLoading(false));
                     setLoading(false);
                     toast.success('ok password working good')
                 } else {
