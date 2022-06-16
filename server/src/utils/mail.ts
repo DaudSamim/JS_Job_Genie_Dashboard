@@ -11,12 +11,13 @@ const transport = nodemailer.createTransport({
   },
 });
 
-const sendMail = (message: string, to: string) => {
+const sendMail = (message: string, to: string, isHtml?: boolean) => {
   const mailOptions = {
     from: 'admin@codeGuru.com',
     to,
     subject: 'Payment Verification',
-    text: message,
+    text: !isHtml && message,
+    html: isHtml && message,
   };
 
   return new Promise((resolve, reject) => {
