@@ -2,7 +2,7 @@ import HomeLayout from "../../layout/HomeLayout";
 import ScreenLoader from "../../shared/ScreenLoader";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
     CssBaseline,
     TextField,
@@ -12,7 +12,6 @@ import {
     Avatar,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
-import jwt from 'jwt-decode'
 
 const ResetPassword = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -51,14 +50,19 @@ const ResetPassword = () => {
                             return res.json();
                         })
                         .then((data) => {
-                            navigate("/login");
+
+                            if (data?.error) {
+                                toast.error(data?.error);
+                            }
+                            if (data?.message) {
+                                toast.success(data?.message);
+                                navigate("/login");
+                            }
                             console.log(data);
-                            // toast.success(data?.)
                         })
                         .catch((err) => console.log(err))
                         .finally(() => setLoading(false));
                     setLoading(false);
-                    toast.success('ok password working good')
                 } else {
                     toast.error('password must be grather then 8 character')
                     setLoading(false);

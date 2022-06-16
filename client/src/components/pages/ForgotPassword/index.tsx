@@ -26,11 +26,16 @@ const ForgotPassword = () => {
           return res.json();
         })
         .then((data) => {
-          navigate("/login");
+          if (data?.error) {
+            toast.error(data?.error);
+          }
+          if (data?.message) {
+            toast.success(data?.message);
+            navigate("/login");
+          }
           console.log(data);
-          toast.success(data?.message)
         })
-        .catch((err) => console.log(err))
+        .catch((err) => console.log(err, 'errorr'))
     };
 
   }
