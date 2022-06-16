@@ -11,9 +11,9 @@ import PrivateRoute from "./components/Routes/PrivateRoute";
 import SubDec from "./components/pages/Dashboard/Sub-Disc";
 import Profile from "./components/pages/Dashboard/Profile";
 import Challenges from "./components/pages/Dashboard/Challenges";
-
 import CashChallenges from "./components/pages/Dashboard/Challenges/Cash";
 import SubmitChallenge from "./components/pages/Dashboard/Sub-Disc/SubmitChallenge";
+import ResetPassword from "./components/pages/ResetPassword";
 import PublicRoute from "./components/Routes/PublicRoute/indes";
 
 const App = () => {
@@ -33,6 +33,7 @@ const App = () => {
           element={<PaymentSuccess />}
         />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/resetpass/:tokken" element={<ResetPassword />} />
         {/* Protected Routed  */}
 
         <Route path="/" element={<PrivateRoute />}>
