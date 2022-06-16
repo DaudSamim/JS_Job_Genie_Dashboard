@@ -58,7 +58,7 @@ const replyToComment = async (req: Request, res: Response) => {
 
 const getCommentsForChallenge = async (req: Request, res: Response) => {
   try {
-    const comments = await Comment.find({ challengeId: 'challenge_1' }).populate({ path: 'childId' }).exec();
+    const comments = await Comment.find({ challengeId: 'challenge_1', isReply: false }).populate({ path: 'childId' }).exec();
 
     return res.status(200).json({ message: 'success', data: comments });
   } catch (error) {

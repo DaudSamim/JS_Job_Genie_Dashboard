@@ -23,10 +23,10 @@ const App = () => {
         {/* Public Router  */}
 
         <Route path="/" element={<PublicRoute />}>
-          <Route path="/" element={<HomePage />} />
+          <Route path="" element={<HomePage />} />
+          <Route path="login" element={<Login />} />
         </Route>
 
-        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route
           path="/paymentSuccess/:paymentTokken"
