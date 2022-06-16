@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { User, UserInput } from '../models/user.model';
+import checkAuthTokken from '../utils/checkAuthTokken';
 
 const getUserByEmail = async (email: string) => {
   const user = await User.findOne({ email }).exec();
@@ -50,24 +51,32 @@ const getUser = async (req: Request, res: Response) => {
 };
 
 const updateUser = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { enabled, fullName } = req.body;
+  const { authTokken, email, updates } = req.body;
+  const { about, fullName, linkedIn, phone, portfolio, profession } = updates;
 
-  const user = await User.findOne({ _id: id });
+  const verifiedTokken = await checkAuthTokken(authTokken);
+
+  if (!verifiedTokken.user?.email || verifiedTokken.user.email !== email) {
+    return res.status(404).json({ message: `A valid email is required here!` });
+  }
+
+  const { user } = verifiedTokken;
 
   if (!user) {
-    return res.status(404).json({ message: `User with id "${id}" not found.` });
+    return res.status(404).json({ message: `User  not found.` });
   }
 
   if (!fullName) {
     return res.status(422).json({ message: 'The fields fullName  required' });
   }
 
-  await User.updateOne({ _id: id }, { enabled, fullName });
+  const updatedUser = await User.findOneAndUpdate(
+    { email },
+    JSON.parse(JSON.stringify({ fullName, profession, linkedIn, portfolio, about, phone })),
+    { new: true },
+  ).exec();
 
-  const userUpdated = await User.findById(id);
-
-  return res.status(200).json({ data: userUpdated });
+  return res.status(200).json({ data: updatedUser });
 };
 
 const deleteUser = async (req: Request, res: Response) => {

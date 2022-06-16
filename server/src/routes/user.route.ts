@@ -10,7 +10,8 @@ const userRoute = () => {
 
   router.get('/users/:id', getUser);
 
-  router.patch('/users/:id', updateUser);
+  router.patch('/updateUser', updateUser);
+  // router.patch('/users/:id', updateUser);
 
   router.delete('/users/:id', deleteUser);
 
