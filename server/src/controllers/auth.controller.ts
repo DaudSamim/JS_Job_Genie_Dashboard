@@ -109,6 +109,13 @@ const verifyAuthTokken = async (req: Request, res: Response) => {
 const createAndSendResetPasswordUrl = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
+
+    const user = await User.findOne({ email }).exec();
+
+    if (!user) {
+      return res.status(409).json({ error: 'User Not Found' });
+    }
+
     const tokkenSecret = process.env.JWT_SECRET;
     const generatedPassResetTokken = jwt.sign({ email, type: 'pass_reset' }, tokkenSecret || 'nothing', { expiresIn: '1h' });
     const passwordResetUrl = `http://localhost:3000/resetpass/${generatedPassResetTokken}`;
@@ -156,6 +163,7 @@ const resetPassword = async (req: Request, res: Response) => {
     const { user } = verifiedTokken;
 
     user.password = encryptedPassword;
+    user.passwordUpdatedAt = new Date().toISOString();
 
     await user.save();
 
@@ -200,6 +208,7 @@ const changePassword = async (req: Request, res: Response) => {
     const encryptedPassword = await bcrypt.hash(newPassword, 10);
 
     user.password = encryptedPassword;
+    user.passwordUpdatedAt = new Date().toISOString();
     await user.save();
 
     const token = jwt.sign({ id: user._id, email: user.email, fullName: user.fullName }, tokkenSecret, {

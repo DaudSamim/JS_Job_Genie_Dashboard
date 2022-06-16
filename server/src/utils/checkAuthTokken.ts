@@ -51,10 +51,10 @@ const checkAuthTokken = async (authTokken: string, typeCheck?: string) => {
       return result;
     }
 
-    const iat = new Date(verifiedTokken.iat);
-    const userUpdatedAt = new Date(user.updatedAt);
+    const iat = new Date(verifiedTokken.iat * 1000);
+    const passwordUpdatedAt = new Date(user.passwordUpdatedAt);
 
-    if (userUpdatedAt > iat) {
+    if (passwordUpdatedAt > iat) {
       result.message = 'Tokken No longer Valid!';
       return result;
     }

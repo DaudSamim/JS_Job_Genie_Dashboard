@@ -14,6 +14,7 @@ type UserDocument = Document & {
   portFolio: string;
   createdAt: string;
   updatedAt: string;
+  passwordUpdatedAt: string;
 };
 
 type UserInput = {
@@ -71,6 +72,11 @@ const usersSchema = new Schema(
     password: {
       type: Schema.Types.String,
       required: false,
+    },
+    passwordUpdatedAt: {
+      type: Schema.Types.String,
+      required: false,
+      default: new Date().toISOString(),
     },
     enabled: {
       type: Schema.Types.Boolean,
