@@ -109,6 +109,13 @@ const verifyAuthTokken = async (req: Request, res: Response) => {
 const createAndSendResetPasswordUrl = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
+
+    const user = await User.findOne({ email }).exec();
+
+    if (!user) {
+      return res.status(409).json({ error: 'User Not Found' });
+    }
+
     const tokkenSecret = process.env.JWT_SECRET;
     const generatedPassResetTokken = jwt.sign({ email, type: 'pass_reset' }, tokkenSecret || 'nothing', { expiresIn: '1h' });
     const passwordResetUrl = `http://localhost:3000/resetpass/${generatedPassResetTokken}`;
