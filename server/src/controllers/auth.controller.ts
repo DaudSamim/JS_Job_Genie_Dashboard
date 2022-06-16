@@ -156,6 +156,7 @@ const resetPassword = async (req: Request, res: Response) => {
     const { user } = verifiedTokken;
 
     user.password = encryptedPassword;
+    user.passwordUpdatedAt = new Date().toISOString();
 
     await user.save();
 
@@ -200,6 +201,7 @@ const changePassword = async (req: Request, res: Response) => {
     const encryptedPassword = await bcrypt.hash(newPassword, 10);
 
     user.password = encryptedPassword;
+    user.passwordUpdatedAt = new Date().toISOString();
     await user.save();
 
     const token = jwt.sign({ id: user._id, email: user.email, fullName: user.fullName }, tokkenSecret, {

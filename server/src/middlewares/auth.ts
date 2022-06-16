@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+const authenticate = (req: Request, res: Response, next: NextFunction) => {
   const tokkenSecret = process.env.JWT_SECRET;
 
   if (!tokkenSecret) {
@@ -21,4 +21,4 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   return next();
 };
 
-export default verifyToken;
+export default authenticate;
