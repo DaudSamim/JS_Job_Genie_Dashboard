@@ -16,6 +16,7 @@ const PrivateRoute = (props: Props) => {
       .then((isValid) => {
         if (!isValid) {
           throw new Error("Tokken Expired! P");
+          
         }
         setLoading(false);
         setIsLogedIn(true);
