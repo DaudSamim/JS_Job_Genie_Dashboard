@@ -10,12 +10,13 @@ const ForgotPassword = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const APIURL = process.env.REACT_APP_API_URL;
 
     if (data.get("email") === ' ' || !data.get("email")) {
       toast.error('Please fill Emty Field')
       return false;
     } else {
-      fetch("/api/createAndSendResetPasswordUrl", {
+      fetch(`${APIURL}/api/createAndSendResetPasswordUrl`, {
         method: "post",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -26,6 +26,7 @@ const ResetPassword = () => {
         setLoading(true);
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        const APIURL = process.env.REACT_APP_API_URL;
 
         // check if fourm is empty 
         if (data.get("password") === ' ' || data.get("c_password") === ' ' || !data.get("password") || !data.get("c_password")) {
@@ -38,7 +39,7 @@ const ResetPassword = () => {
                 let password = data?.get("c_password");
                 let passwordLength: any = password?.toString().length
                 if (passwordLength >= 8) {
-                    fetch("/api/resetPassword", {
+                    fetch(`${APIURL}/api/resetPassword`, {
                         method: "post",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({

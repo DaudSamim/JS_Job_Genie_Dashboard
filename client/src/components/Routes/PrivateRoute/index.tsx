@@ -15,7 +15,7 @@ const PrivateRoute = (props: Props) => {
     validateAuthCookie()
       .then((isValid) => {
         if (!isValid) {
-          throw new Error("Tokken Expired!");
+          throw new Error("Tokken Expired! P");
         }
         setLoading(false);
         setIsLogedIn(true);

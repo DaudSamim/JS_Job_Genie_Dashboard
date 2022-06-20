@@ -20,6 +20,7 @@ const SingleComment = ({
   );
 
   const addComment = async (dataToAdd: any) => {
+    const APIURL = process.env.REACT_APP_API_URL;
     try {
       const commentToAdd = {
         comment: {
@@ -29,7 +30,7 @@ const SingleComment = ({
         replyToId: _id,
       };
 
-      const dataSnap = await fetch("/api/replyToComment/", {
+      const dataSnap = await fetch(`${APIURL}/api/replyToComment/`, {
         // Adding method type
         method: "POST",
         // Adding body or contents to send

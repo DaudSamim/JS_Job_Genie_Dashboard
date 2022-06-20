@@ -25,9 +25,10 @@ type Props = {
 };
 
 const SubmitChallenge = ({ comments = [] }: Props) => {
+  const APIURL = process.env.REACT_APP_API_URL;
   const fetchComments = async () => {
     try {
-      const commentsSnap = await fetch("/api/getChallengeComments");
+      const commentsSnap = await fetch(`${APIURL}/api/getChallengeComments`);
       const oldComments = await commentsSnap.json();
 
       setCommentsState(oldComments.data);
@@ -38,7 +39,7 @@ const SubmitChallenge = ({ comments = [] }: Props) => {
   };
 
   const addComment = async (dataToAdd: any) => {
-    const dataSnap = await fetch("/api/addComment", {
+    const dataSnap = await fetch(`${APIURL}/api/addComment`, {
       // Adding method type
       method: "POST",
       // Adding body or contents to send
