@@ -14,9 +14,10 @@ const Profile = (props: Props) => {
 
     const fetchUserProfile = async () => {
         const cookieKey = process.env.REACT_APP_AUTH_COOKIE;
+        const APIURL = process.env.REACT_APP_API_URL;
         const authTokken = Cookies.get(cookieKey || "nothing");
 
-        const dataSnap = await fetch("/api/getProfile", {
+        const dataSnap = await fetch(`${APIURL}/api/getProfile`, {
             // Adding method type
             method: "POST",
             // Adding body or contents to send

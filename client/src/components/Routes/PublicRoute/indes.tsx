@@ -22,7 +22,7 @@ const PublicRoute = (props: Props) => {
       .catch((error: string) => {
         setLoading(false);
         setIsNotLoggedIn(true);
-        console.log("not logged in yet!");
+        console.log("not logged in yet!", error);
       });
   }, []);
 
